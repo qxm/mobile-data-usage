@@ -73,6 +73,7 @@ export default class DataUsageItem extends Component {
 
   render() {
     const { dataUsage } = this.props;
+    if (dataUsage && dataUsage.length>0)
     return (
       <SafeAreaView style={styles.safeAreaView}>
         <View style={styles.container}>
@@ -95,6 +96,7 @@ export default class DataUsageItem extends Component {
         </View>
       </SafeAreaView>
     );
+   else return (<View />);
   }
 }
 const styles = StyleSheet.create({
