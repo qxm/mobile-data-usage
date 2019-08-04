@@ -10,7 +10,8 @@ import {
   TouchableOpacity, 
   Image,
   Slider,
-  SafeAreaView
+  SafeAreaView,
+  Linking
 } from 'react-native';
 
 export default class DataUsageItem extends Component {
@@ -41,8 +42,12 @@ export default class DataUsageItem extends Component {
           }}
         >
           <Text>{item.volume_of_mobile_data}</Text>
+	  <TouchableOpacity
+              onPress={() => Linking.openURL(item.url)}
+            >
 	  <Image source={require('../assets/decline.png')}
-       style={{width: 30, height: 30}} />
+               style={{width: 30, height: 30}} />
+	   </TouchableOpacity>
           <Text>{item.quarter}</Text>
         </View>
       );
