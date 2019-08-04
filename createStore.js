@@ -7,7 +7,10 @@ const logger = createLogger();
 
 export default (initialState = {}) => (
   createStore(
-    dataUsageReducer,
+    combineReducers({
+      dataUsage: dataUsageReducer
+    }),
+
     initialState,
     applyMiddleware(logger, promiseMiddleware)
   )

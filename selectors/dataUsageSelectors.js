@@ -1,4 +1,10 @@
 import { createSelector } from 'reselect';
 
-export const dataUsageSelector = state => state.dataUsage;
+const dataSelector = state => state.dataUsage;
+export const dataUsageSelector = createSelector(
+  [dataSelector],
+  items => items
+);
+
+
 

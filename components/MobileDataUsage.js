@@ -1,13 +1,16 @@
-import React, { PropTypes, Component } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import {
-  ListView,
+  Text,
+  FlatList,
   StyleSheet,
   View,
   Modal,
   TouchableOpacity,
   WebView,
   RefreshControl,
-  ActivityIndicator
+  ActivityIndicator,
+  ViewPropTypes
 } from 'react-native';
 import DataUsageItem from './DataUsageItem';
 import SmallText from './SmallText';
@@ -17,17 +20,13 @@ export default class MobileDataUsage extends Component {
 
   constructor(props) {
     super(props);
-    this.ds = new ListView.DataSource({
-      rowHasChanged: (row1, row2) => row1._id !== row2._id
-    });
     this.state = {
-      dataSource: this.ds.cloneWithRows(props.dataUsage),
       initialLoading: true,
       modalVisible: false,
       refreshing: false
     };
 
-    this.renderRow = this.renderRow.bind(this);
+    this.renderItem = this.renderItem.bind(this);
     this.onModalClose = this.onModalClose.bind(this);
     this.onModalOpen = this.onModalOpen.bind(this);
     this.refresh = this.refresh.bind(this);
@@ -37,9 +36,17 @@ export default class MobileDataUsage extends Component {
     this.refresh();
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentDidUpdate(prevProps) {
+  // Typical usage (don't forget to compare props):
+   if (this.props.dataUsage !== prevProps.dataUsage) {
     this.setState({
-      dataSource: this.state.dataSource.cloneWithRows(nextProps.dataUsage),
+      initialLoading: false
+    });
+   }
+ }
+
+  UNSAFE_componentWillReceiveProps(nextProps) {
+    this.setState({
       initialLoading: false
     });
   }
@@ -87,25 +94,24 @@ export default class MobileDataUsage extends Component {
     );
   }
 
-  renderRow(rowData, ...rest) {
-    const index = parseInt(rest[1], 10);
+  renderItem(item) {
     return (
       <DataUsageItem
         onPress={() => this.onModalOpen('https://www.google.com')}
         style={styles.dataUsageItem}
-        index={index}
-        data={[{...rowData}]}
+        index={1}
+        dataUsage={[{"volume_of_mobile_data": "2.109516", "quarter": "2009-Q4", "_id": 22}]}
       />
     );
   }
 
   render() {
     const {
+      dataUsage,
       listStyles = globalStyles.COMMON_STYLES.pageContainer,
       showLoadingSpinner
     } = this.props;
-    const { initialLoading, refreshing, dataSource } = this.state;
-
+    const { initialLoading, refreshing } = this.state;
     return (
       (initialLoading && showLoadingSpinner
         ? (
@@ -118,7 +124,7 @@ export default class MobileDataUsage extends Component {
           </View>
         ) : (
           <View style={styles.container}>
-            <ListView
+            <FlatList
               refreshControl={
                 <RefreshControl
                   refreshing={refreshing}
@@ -126,21 +132,21 @@ export default class MobileDataUsage extends Component {
                 />
               }
               enableEmptySections
-              dataSource={dataSource}
-              renderRow={this.renderRow}
+              data={dataUsage}
+              renderItem={this.renderItem}
               style={listStyles}
             />
-            {this.renderModal()}
           </View>
         )
       )
     );
+    
   }
 }
 
 MobileDataUsage.propTypes = {
-  data: PropTypes.arrayOf(PropTypes.object),
-  listStyles: View.propTypes.style,
+  dataUsage: PropTypes.arrayOf(PropTypes.object),
+  listStyles: ViewPropTypes.style,
   loadData: PropTypes.func,
   showLoadingSpinner: PropTypes.bool
 };

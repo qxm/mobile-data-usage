@@ -1,4 +1,6 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
+import ViewPropTypes from 'react-native';
 import {
   StyleSheet,
   Image,
@@ -35,7 +37,7 @@ const Thumbnail = ({ style, titleText, accentColor, url }) => {
 };
 
 Thumbnail.propTypes = {
-  style: View.propTypes.style,
+  style: ViewPropTypes.style,
   url: PropTypes.string.isRequired,
   accentColor: PropTypes.string.isRequired,
   titleText: PropTypes.string
