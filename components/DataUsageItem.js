@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
 import CardView from 'react-native-cardview';
+import Thumbnail from './Thumbnail';
+import * as globalStyles from '../styles/global';
 import {
   AppRegistry,
   StyleSheet,
   Text,
   View,
-  TouchableOpacity,
+  TouchableOpacity, 
+  Image,
   Slider,
   SafeAreaView
 } from 'react-native';
@@ -23,6 +26,28 @@ export default class DataUsageItem extends Component {
       );
     }
     return data.map(item => {
+      const accentColor = globalStyles.ACCENT_COLORS[
+      this.props.index % globalStyles.ACCENT_COLORS.length
+    ];
+      if (item.decline) {
+      return (
+        <View
+          key={item._id}
+          style={{
+            alignItems: 'center',
+            flexDirection: 'row',
+            padding: 10,
+            justifyContent: 'space-between'
+          }}
+        >
+          <Text>{item.volume_of_mobile_data}</Text>
+	  <Image source={require('../assets/decline.png')}
+       style={{width: 30, height: 30}} />
+          <Text>{item.quarter}</Text>
+        </View>
+      );
+    } 
+    
       return (
         <View
           key={item._id}
@@ -38,6 +63,7 @@ export default class DataUsageItem extends Component {
         </View>
       );
     });
+
   }
 
   render() {
@@ -91,5 +117,8 @@ const styles = StyleSheet.create({
   sliderStyle: {
     width: 300,
     marginTop: 40
+  },
+  thumbnail: {
+    marginBottom: 5
   }
 });

@@ -6,13 +6,11 @@ import {
   Image,
   View
 } from 'react-native';
-import Title from './Title';
 
-const Thumbnail = ({ style, titleText, accentColor, url }) => {
+const Thumbnail = ({ style, accentColor, url }) => {
   const imageStyle = {
     backgroundColor: `${accentColor}77` // adds some transparency to the color
   };
-  const TitleComponent = <Title style={styles.title}>{titleText}</Title>;
 
   return (
     <View style={[styles.container, { borderColor: accentColor }, style]}>
@@ -23,13 +21,11 @@ const Thumbnail = ({ style, titleText, accentColor, url }) => {
             uri: url
           }}
         >
-          {TitleComponent}
         </Image>
       ) : (
         <View
           style={[styles.image, imageStyle]}
         >
-          {TitleComponent}
         </View>
       )}
     </View>
@@ -39,8 +35,7 @@ const Thumbnail = ({ style, titleText, accentColor, url }) => {
 Thumbnail.propTypes = {
   style: ViewPropTypes.style,
   url: PropTypes.string.isRequired,
-  accentColor: PropTypes.string.isRequired,
-  titleText: PropTypes.string
+  accentColor: PropTypes.string.isRequired
 };
 
 const styles = StyleSheet.create({
@@ -51,9 +46,6 @@ const styles = StyleSheet.create({
   image: {
     height: 100,
     justifyContent: 'flex-end'
-  },
-  title: {
-    padding: 5
   }
 });
 
