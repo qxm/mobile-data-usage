@@ -49,14 +49,14 @@ export default class DataUsageItem extends Component {
             style={{
               backgroundColor: 'white'
             }}
-            cardElevation={1}
-            cardMaxElevation={1}
+            cardElevation={2}
+            cardMaxElevation={2}
             cornerRadius={5}
             cornerOverlap={false}
           >
             <View style={styles.child}>
               <View style={styles.titleView}>
-                <Text style={styles.title}>Mobile Data Usage</Text>
+                <Text style={styles.title}>{dataUsage[0].quarter.substring(0,4)}</Text>
               </View>
               <View>{this.renderData(dataUsage)}</View>
             </View>

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
-  Text,
+  Spacing,
   FlatList,
   StyleSheet,
   View,
@@ -45,12 +45,6 @@ export default class MobileDataUsage extends Component {
    }
  }
 
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    this.setState({
-      initialLoading: false
-    });
-  }
-
   onModalClose() {
     this.setState({
       modalVisible: false,
@@ -65,6 +59,17 @@ export default class MobileDataUsage extends Component {
     });
   }
 
+ renderSeparator = () => {
+    return (
+      <View
+        style={{
+		height: 20,
+		 backgroundColor: '#F5FCFF'
+        }}
+      />
+    );
+  };
+  
   refresh() {
     if (this.props.loadData) {
       this.props.loadData();
@@ -94,13 +99,14 @@ export default class MobileDataUsage extends Component {
     );
   }
 
-  renderItem(item) {
+  renderItem({item}) {
     return (
       <DataUsageItem
         onPress={() => this.onModalOpen('https://www.google.com')}
         style={styles.dataUsageItem}
         index={1}
-        dataUsage={[{"volume_of_mobile_data": "2.109516", "quarter": "2009-Q4", "_id": 22}]}
+	dataUsage={item}
+        //dataUsage={[{"volume_of_mobile_data": item.volume_of_mobile_data, "quarter": "2018-Q1", "_id": 55}]}
       />
     );
   }
@@ -133,7 +139,9 @@ export default class MobileDataUsage extends Component {
               }
               enableEmptySections
               data={dataUsage}
-              renderItem={this.renderItem}
+	      renderItem={this.renderItem}
+	      ItemSeparatorComponent={this.renderSeparator}
+	      keyExtractor={(item,index) => index.toString()}
               style={listStyles}
             />
           </View>
@@ -145,7 +153,7 @@ export default class MobileDataUsage extends Component {
 }
 
 MobileDataUsage.propTypes = {
-  dataUsage: PropTypes.arrayOf(PropTypes.object),
+  dataUsage: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.object)),
   listStyles: ViewPropTypes.style,
   loadData: PropTypes.func,
   showLoadingSpinner: PropTypes.bool

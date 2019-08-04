@@ -1,8 +1,15 @@
 import { createSelector } from 'reselect';
+import {  groupMobileDataUsage } from '../util/dataTransformations';
+
 
 const dataSelector = state => state.dataUsage;
-export const dataUsageSelector = createSelector(
+const groupDataSelector = createSelector(
   [dataSelector],
+  groupMobileDataUsage
+);
+
+export const dataUsageSelector = createSelector(
+  [groupDataSelector],
   items => items
 );
 
